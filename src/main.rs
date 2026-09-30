@@ -18,7 +18,7 @@ fn main() {
 
     for i in 0..n
     {
-        let sk: Scalar = Scalar::generate();
+        let sk = Scalar::generate();
         A_Sk.push(sk.clone());
         A_Pk.push(sk * G);
     }
@@ -42,16 +42,5 @@ fn main() {
         b.push(Scalar::generate());
         r.push(Scalar::generate());
         j.push(rng.gen_range(0..Tags.len()));
-    }
-
-    let mut delta: Vec<Scalar> = Vec::new();
-    let mut gamma: Vec<Scalar> = Vec::new();
-    let mut zetta: Vec<Scalar> = Vec::new();
-
-    for i in 0..m
-    {
-        delta.push(Scalar::generate());
-        zetta.push(Scalar::generate());
-        gamma.push(Scalar::generate());
-    }
+    }    let mut temp = Scalar::ZERO;
 }
