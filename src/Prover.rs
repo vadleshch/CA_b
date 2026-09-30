@@ -4,7 +4,6 @@ use k256::elliptic_curve::Generate;
 use rand::Rng;
 use k256::elliptic_curve::ops::Reduce;
 use sha2::{Digest, Sha256};
-use chrono::Local;
 use sha2::digest::Update;
 use crate::Verifier::FiatShamir;
 
@@ -49,7 +48,7 @@ fn GenProof(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b
 
 
 
-fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b: Scalar, r: Scalar, j: usize, R: Vec<ProjectivePoint>, C: Vec<ProjectivePoint>, H_a: ProjectivePoint, C_out: ProjectivePoint) -> Proof//(ProjectivePoint, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Scalar, Scalar, Scalar, Vec<Scalar>, Vec<Scalar>)
+fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b: Scalar, r: Scalar, j: usize, R: Vec<ProjectivePoint>, C: Vec<ProjectivePoint>, H_a: ProjectivePoint, C_out: ProjectivePoint, ctx: &[u8]) -> Proof//(ProjectivePoint, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Scalar, Scalar, Scalar, Vec<Scalar>, Vec<Scalar>)
 {
     let G = ProjectivePoint::GENERATOR;
     let t = Tags.len();
@@ -91,7 +90,7 @@ fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar,
             V_l.push(r_t * A_Pk[0]);
         }
     }
-    let e = FiatShamir(&T_out, &C_out, &H_a, &G, &C, &R, &Tags, &A_Pk, &T_b, &T_r, &U_l, &V_l);
+    let e = FiatShamir(&T_out, &C_out, &H_a, &G, &C, &R, &Tags, &A_Pk, &T_b, &T_r, &U_l, &V_l, &ctx);
 
     let z_a = r_a + a * e;
     let z_b = r_b + b * e;

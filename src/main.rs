@@ -45,5 +45,6 @@ fn main() {
         b.push(Scalar::generate());
         r.push(Scalar::generate());
         j.push(rng.gen_range(0..Tags.len()));
-    }    let mut temp = Scalar::ZERO;
+    }
+    
 }
