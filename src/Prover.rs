@@ -4,6 +4,9 @@ use k256::elliptic_curve::Generate;
 use rand::Rng;
 use k256::elliptic_curve::ops::Reduce;
 use sha2::{Digest, Sha256};
+use chrono::Local;
+use sha2::digest::Update;
+use crate::Verifier::FiatShamir;
 
 pub struct Proof
 {
@@ -15,6 +18,7 @@ pub struct Proof
     pub T_out: ProjectivePoint,
     pub T_b: Vec<ProjectivePoint>,
     pub T_r: Vec<ProjectivePoint>,
+    pub Tags: Vec<ProjectivePoint>,
     pub U_l: Vec<ProjectivePoint>,
     pub V_l: Vec<ProjectivePoint>,
     pub z_a: Scalar,
@@ -87,24 +91,7 @@ fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar,
             V_l.push(r_t * A_Pk[0]);
         }
     }
-    let mut hasher = sha2::Sha256::new();
-    hash_point(&mut hasher, &T_out);
-    hash_point(&mut hasher, &C_out);
-    hash_point(&mut hasher, &H_a);
-    hash_point(&mut hasher, &G);
-    hash_points(&mut hasher, &C);
-    hash_points(&mut hasher, &R);
-    hash_points(&mut hasher, &Tags);
-    hash_points(&mut hasher, &A_Pk);
-    hash_points(&mut hasher, &T_b);
-    hash_points(&mut hasher, &T_r);
-    hash_points(&mut hasher, &U_l);
-    hash_points(&mut hasher, &V_l);
-
-    let digest = hasher.finalize();
-    let mut eh = FieldBytes::default();
-    eh.copy_from_slice(&digest);
-    let e: Scalar = <Scalar as Reduce<FieldBytes>>::reduce(&eh);
+    let e = FiatShamir(&T_out, &C_out, &H_a, &G, &C, &R, &Tags, &A_Pk, &T_b, &T_r, &U_l, &V_l);
 
     let z_a = r_a + a * e;
     let z_b = r_b + b * e;
@@ -118,20 +105,7 @@ fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar,
             temp = temp + d_l[i];
         }
     }
-
     d_l[j] = e - temp;
-
     c_l[j] = r_t + d_l[j] * r;
-
-    Proof {R: R, C: C, P: A_Pk, H_a: H_a, C_out: C_out, T_out: T_out, T_b: T_b, T_r: T_r, U_l: U_l, V_l: V_l, z_a: z_a, z_b: z_b, z_r: z_r, d_l: d_l, c_l: c_l}
-}
-
-fn hash_point(hasher: &mut Sha256, point: &ProjectivePoint) {
-    let encoded = point.to_affine().to_sec1_point(true);
-    hasher.update(encoded.as_bytes());
-}
-fn hash_points(hasher: &mut Sha256, points: &[ProjectivePoint]) {
-    for point in points {
-        hash_point(hasher, point);
-    }
+    Proof {R: R, C: C, P: A_Pk, H_a: H_a, C_out: C_out, T_out: T_out, T_b: T_b, T_r: T_r, U_l: U_l, V_l: V_l, z_a: z_a, z_b: z_b, z_r: z_r, d_l: d_l, c_l: c_l, Tags: Tags}
 }

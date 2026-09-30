@@ -1,10 +1,13 @@
 mod Prover;
 mod Verifier;
 
-use k256::{ProjectivePoint, Scalar};
+use chrono::Local;
+use k256::{FieldBytes, ProjectivePoint, Scalar};
+use k256::elliptic_curve::bigint::Reduce;
 use k256::elliptic_curve::Generate;
+use k256::elliptic_curve::sec1::ToSec1Point;
 use rand::Rng;
-
+use sha2::{Digest, Sha256};
 
 fn main() {
     let t = 5;
