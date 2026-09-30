@@ -1,0 +1,11 @@
+[package]
+name = "CA_b"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+k256 = "0.14.0"
+rand = "0.8"
+sha2 = "0.10"
+chrono = "0.4.45"
+lambdaworks-math = "0.13.0"
