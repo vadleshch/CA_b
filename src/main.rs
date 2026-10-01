@@ -17,7 +17,7 @@ fn main()
     let T: Vec<usize> = vec![5, 10, 20];
     let M: Vec<usize> = vec![1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
-    let repeats = 10;
+    let repeats = 30;
     let ctx = b"CA/benchmark/v1";
 
     println!("{:<12} {:>6} {:>6} {:>8} {:>20} {:>24}", "Operation", "n", "t", "m", "Average time (ms)", "Average peak (MB)");
