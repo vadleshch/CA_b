@@ -9,7 +9,7 @@ use lambdaworks_math::msm::pippenger;
 use lambdaworks_math::traits::ByteConversion;
 use lambdaworks_math::unsigned_integer::element::UnsignedInteger;
 
-pub fn Verify(p: Vec<Proof>, Tags: &Vec<ProjectivePoint>, A_Pk: &Vec<ProjectivePoint>, ctx: &[u8]) -> bool
+pub fn Verify(p: &Vec<Proof>, Tags: &Vec<ProjectivePoint>, A_Pk: &Vec<ProjectivePoint>, ctx: &[u8]) -> bool
 {
     let m = p.len();
     let t = Tags.len();

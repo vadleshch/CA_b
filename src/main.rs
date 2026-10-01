@@ -21,9 +21,15 @@ fn main() {
 
     for i in 0..n
     {
-        let sk = Scalar::generate();
+        let mut sk = Scalar::generate();
+
+        while sk == Scalar::ZERO
+        {
+            sk = Scalar::generate();
+        }
+
         A_Sk.push(sk.clone());
-        A_Pk.push(sk * G);
+        A_Pk.push(sk.invert().unwrap() * G);
     }
 
     let mut Tags: Vec<ProjectivePoint> = Vec::new();
@@ -46,5 +52,29 @@ fn main() {
         r.push(Scalar::generate());
         j.push(rng.gen_range(0..Tags.len()));
     }
-    
+    let ctx = b"Context";
+    let mut p: Vec<Prover::Proof> = Vec::new();
+
+    for i in 0..m
+    {
+        let (R, C, H_a, C_out) = Prover::GenProof(A_Pk.clone(), Tags.clone(), a[i], b[i], r[i], j[i]);
+
+        for k in 0..n
+        {
+            assert_eq!(H_a - A_Sk[k] * R[k], Tags[j[i]]);
+            assert_eq!(C_out - A_Sk[k] * C[k], a[i] * H_a);
+        }
+
+        p.push(Prover::Commitment(A_Pk.clone(), Tags.clone(), a[i], b[i], r[i], j[i], R, C, H_a, C_out, ctx));
+    }
+
+    let result = Verifier::Verify(&p, &Tags, &A_Pk, ctx);
+    assert!(result);
+
+    p[0].z_b = p[0].z_b + Scalar::ONE;
+
+    let changed = Verifier::Verify(&p, &Tags, &A_Pk, ctx);
+    assert!(!changed);
+
+    println!("Batch: {}; changed proof: {}", result, changed);
 }

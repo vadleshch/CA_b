@@ -27,7 +27,7 @@ pub struct Proof
     pub c_l: Vec<Scalar>,
 }
 
-fn GenProof(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b: Scalar, r: Scalar, j: usize) -> (Vec<ProjectivePoint>, Vec<ProjectivePoint>, ProjectivePoint, ProjectivePoint)
+pub fn GenProof(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b: Scalar, r: Scalar, j: usize) -> (Vec<ProjectivePoint>, Vec<ProjectivePoint>, ProjectivePoint, ProjectivePoint)
 {
     let G = ProjectivePoint::GENERATOR;
     let mut rng = rand::thread_rng();
@@ -48,7 +48,7 @@ fn GenProof(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b
 
 
 
-fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b: Scalar, r: Scalar, j: usize, R: Vec<ProjectivePoint>, C: Vec<ProjectivePoint>, H_a: ProjectivePoint, C_out: ProjectivePoint, ctx: &[u8]) -> Proof//(ProjectivePoint, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Scalar, Scalar, Scalar, Vec<Scalar>, Vec<Scalar>)
+pub fn Commitment(A_Pk: Vec<ProjectivePoint>, Tags: Vec<ProjectivePoint>, a: Scalar, b: Scalar, r: Scalar, j: usize, R: Vec<ProjectivePoint>, C: Vec<ProjectivePoint>, H_a: ProjectivePoint, C_out: ProjectivePoint, ctx: &[u8]) -> Proof//(ProjectivePoint, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Vec<ProjectivePoint>, Scalar, Scalar, Scalar, Vec<Scalar>, Vec<Scalar>)
 {
     let G = ProjectivePoint::GENERATOR;
     let t = Tags.len();
