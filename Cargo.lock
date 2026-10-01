@@ -9,6 +9,7 @@ dependencies = [
  "chrono",
  "k256",
  "lambdaworks-math",
+ "peakmem-alloc",
  "rand",
  "sha2 0.10.9",
 ]
@@ -508,6 +509,12 @@ name = "once_cell"
 version = "1.21.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
+
+[[package]]
+name = "peakmem-alloc"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5eb7428a977a472465aced57d8d2335d6167c0ce9c05c283fd6faed3d8d948f6"
 
 [[package]]
 name = "pin-project-lite"
