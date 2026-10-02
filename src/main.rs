@@ -13,12 +13,12 @@ static ALLOC: PeakMemAlloc<std::alloc::System> = PeakMemAlloc::system();
 
 fn main()
 {
-    let N: Vec<usize> = vec![5, 10, 20];
-    let T: Vec<usize> = vec![5, 10, 20];
+    let N: Vec<usize> = vec![5, 10, 20, 50];
+    let T: Vec<usize> = vec![5, 10, 20, 50];
     let M: Vec<usize> = vec![1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
-    let repeats = 30;
-    let ctx = b"CA/benchmark/v1";
+    let repeats = 50;
+    let ctx = b"Context";
 
     println!("{:<12} {:>6} {:>6} {:>8} {:>20} {:>24}", "Operation", "n", "t", "m", "Average time (ms)", "Average peak (MB)");
 
@@ -30,12 +30,15 @@ fn main()
         }
     }
 
-    let n = 10;
-    let t = 5;
-
-    for i in 0..M.len()
+    for i in 0..N.len()
     {
-        Benchmark("verify", n, t, M[i], repeats, ctx);
+        for j in 0..T.len()
+        {
+            for k in 0..M.len()
+            {
+                Benchmark("verify", N[i], T[j], M[k], repeats, ctx);
+            }
+        }
     }
 }
 
